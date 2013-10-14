@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
+
+    <appender name="debug_file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/webrailwaysystem/logs/debug/debug.log" />
+        <param name="DatePattern" value="'.'dd-MM-yyyy" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}:%M:%L - %m%n" />
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="DEBUG" />
+            <param name="levelMax" value="DEBUG" />
+        </filter>
+    </appender>
+
+    <appender name="warn_file" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="file" value="/webrailwaysystem/logs/warn/warn.log" />
+        <param name="DatePattern" value="'.'dd-MM-yyyy" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}:%M:%L - %m%n" />
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="WARN" />
+        </filter>
+    </appender>
+
+    <appender name="mail" class="org.apache.log4j.net.SMTPAppender">
+        <param name="BufferSize" value="1" />
+        <param name="SMTPHost" value="smtp.yandex.ru" />
+        <param name="SMTPPort" value="587" />
+        <param name="SMTPAuth" value="true" />
+        <param name="SMTPUsername" value="hardigun@yandex.ru" />
+        <param name="SMTPPassword" value="Vgy76tfcxdr%" />
+        <param name="From" value="hardigun@yandex.ru" />
+        <param name="To" value="hardigun@yandex.ru" />
+        <param name="Subject" value="Railway System ERROR" />
+
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d{ABSOLUTE} %5p %t %c{1}:%M:%L - %m%n"/>
+        </layout>
+
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="levelMin" value="ERROR" />
+        </filter>
+    </appender>
+
+    <logger name="webrailwaysystem">
+        <level value="DEBUG" />
+        <appender-ref ref="debug_file" />
+        <appender-ref ref="warn_file" />
+        <appender-ref ref="mail" />
+    </logger>
+
+</log4j:configuration>
