@@ -28,8 +28,8 @@ public abstract class AbstractDAO<T extends AbstractEntity> {
         this.sessionFactory.getCurrentSession().save(obj);
     }
 
-    public Object getById(Class<T> tClass, int id) {
-        return this.sessionFactory.getCurrentSession().get(tClass, id);
+    public T getById(Class<T> tClass, int id) {
+        return (T) this.sessionFactory.getCurrentSession().get(tClass, id);
     }
 
     protected SessionFactory getSessionFactory() {

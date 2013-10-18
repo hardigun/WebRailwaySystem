@@ -7,12 +7,12 @@
   <head>
         <title>Shedule by station</title>
         <spring:url value="/resources/jquery-1.10.2.min.js" var="jquery_url" />
-        <spring:url value="/resources/shedule-by-station.js" var="shedule_scripts_url" />
+        <spring:url value="/resources/shedule-search.js" var="shedule_scripts_url" />
         <script src="${jquery_url}"></script>
         <script src="${shedule_scripts_url}"></script>
   </head>
   <body>
-    <form:form modelAttribute="sheduleFilter" method="POST" action="/shedule/by-station">
+    <form:form modelAttribute="sheduleFilter" method="POST" action="/shedule/search/by-station">
         <fieldset>
             <legend>Shedule search params</legend>
             <table>
@@ -38,7 +38,7 @@
                     <td><form:errors path="stationInfo" /></td>
                 </tr>
                 <tr>
-                    <td colspan="3"><input type="submit" value="Submit" /></td>
+                    <td colspan="3"><input type="submit" value="Search" /></td>
                 </tr>
             </table>
         </fieldset>
@@ -48,7 +48,7 @@
         <form id="buyForm" method="GET" action="/ticket/buy/{id}">
             <input type="button" id="buyButton" value="Buy">
         </form>
-        <railwaysystem:shedule-table sheduleItemsList="${sheduleItemsList}" radioClass="sheduleItemsClass" />
+        <railwaysystem:shedule-table sheduleItemsList="${sheduleItemsList}" radioClass="sheduleItemRadio" />
     </c:if>
 
   </body>

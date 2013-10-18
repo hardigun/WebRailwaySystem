@@ -23,7 +23,7 @@ public class StationsTableTag extends SimpleTagSupport {
 
     private List<SheduleItemEntity> sheduleItemsList = new ArrayList<SheduleItemEntity>();
 
-    private String radioClass;
+    private String radioClass = "sheduleItemRadio";
 
     public void doTag() throws JspException {
         PageContext pageContext = (PageContext) getJspContext();

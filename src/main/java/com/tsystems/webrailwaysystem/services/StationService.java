@@ -26,12 +26,12 @@ public class StationService {
     /**
      * Contract: return stations that include route
      *
-     * @param route
+     * @param routeId
      * @return
      */
     @Transactional(readOnly = true)
-    public List<StationEntity> getStationsByRoute(RouteEntity route) {
-        return stationDAO.getAllByRoute(route);
+    public List<StationEntity> getStationsByRouteId(int routeId) {
+        return stationDAO.getAllByRouteId(routeId);
     }
 
 }

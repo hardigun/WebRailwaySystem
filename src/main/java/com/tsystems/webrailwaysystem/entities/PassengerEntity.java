@@ -1,5 +1,7 @@
 package com.tsystems.webrailwaysystem.entities;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -36,6 +38,7 @@ public class PassengerEntity extends AbstractEntity {
 
     @OneToMany (mappedBy = "passenger")
     @Size
+    @JsonBackReference
     List<TicketEntity> ticketList = new ArrayList<TicketEntity>();
 
     public String getName() {

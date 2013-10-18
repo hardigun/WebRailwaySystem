@@ -18,13 +18,13 @@ public class StationDAO extends AbstractDAO {
     /**
      * Contract: get list of StationEntity that include routeEntity
      *
-     * @param routeEntity station list for which need to get
+     * @param routeId station list for which need to get
      * @return list of station for routeEntity
      */
-    public List<StationEntity> getAllByRoute(RouteEntity routeEntity) {
-        String queryStr = "FROM StationEntity AS station WHERE station.route = :route";
+    public List<StationEntity> getAllByRouteId(int routeId) {
+        String queryStr = "FROM StationEntity AS station WHERE station.route.id = :routeId";
         Query query = this.getSessionFactory().getCurrentSession().createQuery(queryStr);
-        query.setParameter("route", routeEntity);
+        query.setParameter("routeId", routeId);
         return query.list();
     }
 

@@ -47,7 +47,7 @@ public class TicketService {
      */
     public List<TicketEntity> searchByParams(TicketsFilter filter) {
         List<TicketEntity> ticketsList = new ArrayList<TicketEntity>();
-        if(filter.getTicket() != null) {
+        if(filter.getTicket() != null && filter.getTicket().getId() > 0) {
             TicketEntity ticketEntity = (TicketEntity) this.ticketDAO.getById(TicketEntity.class, filter.getTicket().getId());
             ticketsList.add(ticketEntity);
         } else {
@@ -104,16 +104,17 @@ public class TicketService {
     /**
      * Contract: set confirm status on ticket
      *
-     * @param inTicket ticket for set confirm
+     * @param ticketId ticket for set confirm
      * @throws RailwaySystemException if in the database no tickets as inTicket
      */
-    public void confirmSale(TicketEntity inTicket) throws RailwaySystemException {
-        TicketEntity ticket = (TicketEntity) this.ticketDAO.getById(TicketEntity.class, inTicket.getId());
+    public TicketEntity confirmSale(int ticketId) throws RailwaySystemException {
+        TicketEntity ticket = (TicketEntity) this.ticketDAO.getById(TicketEntity.class, ticketId);
         if(ticket == null) {
             throw new RailwaySystemException();
         }
         ticket.setSaleConfirmed(true);
         this.ticketDAO.save(ticket);
+        return ticket;
     }
 
 }

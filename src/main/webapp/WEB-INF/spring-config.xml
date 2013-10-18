@@ -51,6 +51,6 @@
         </property>
     </bean>
 
-    <mvc:resources mapping="/resources/**" location="/js/" />
+    <mvc:resources mapping="/resources/**" location="/js/, /css/, /img/" />
     <mvc:annotation-driven validator="validator" conversion-service="conversionService" />
 </beans>

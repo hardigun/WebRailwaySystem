@@ -4,6 +4,7 @@ import com.tsystems.webrailwaysystem.entities.PassengerEntity;
 import com.tsystems.webrailwaysystem.entities.SheduleItemEntity;
 import com.tsystems.webrailwaysystem.entities.TicketEntity;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
+import com.tsystems.webrailwaysystem.filters.TicketsFilter;
 import com.tsystems.webrailwaysystem.services.SheduleService;
 import com.tsystems.webrailwaysystem.services.TicketService;
 import org.apache.log4j.Logger;
@@ -33,6 +34,27 @@ public class TicketController {
 
     @Autowired
     private TicketService ticketService;
+
+    @RequestMapping(value = "/show", method = RequestMethod.GET)
+    public ModelAndView showPassengers() {
+        return new ModelAndView("ticket/show", "ticketsFilter", new TicketsFilter());
+    }
+
+    @RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
+    public ModelAndView showPassengers(@PathVariable("id") int sheduleItemId, Model uiModel) {
+        TicketsFilter ticketsFilter = new TicketsFilter();
+        SheduleItemEntity sheduleItem = new SheduleItemEntity();
+        sheduleItem.setId(sheduleItemId);
+        ticketsFilter.setSheduleItem(sheduleItem);
+        uiModel.addAttribute("ticketsList", this.ticketService.searchByParams(ticketsFilter));
+        return new ModelAndView("ticket/show", "ticketsFilter", ticketsFilter);
+    }
+
+    @RequestMapping(value = "/show", method = RequestMethod.POST)
+    public ModelAndView showPassenger(@ModelAttribute TicketsFilter ticketsFilter, Model uiModel) {
+        uiModel.addAttribute("ticketsList", this.ticketService.searchByParams(ticketsFilter));
+        return new ModelAndView("ticket/show", "ticketsFilter", ticketsFilter);
+    }
 
     @RequestMapping(value = "/buy/{id}", method = RequestMethod.GET)
     public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, Model uiModel) {

@@ -1,5 +1,6 @@
 package com.tsystems.webrailwaysystem.entities;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Range;
 
@@ -30,6 +31,7 @@ public class TrainEntity extends AbstractEntity {
     @Range(min = 1, max = 1000, message = "Train capacity must be in range from 1 to 1000")
     private int capacity;
     @OneToMany(mappedBy = "train")
+    @JsonBackReference
     private List<SheduleItemEntity> sheduleList = new ArrayList<SheduleItemEntity>();
 
     public String getTrainNumber() {

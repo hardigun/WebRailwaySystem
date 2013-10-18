@@ -24,6 +24,7 @@
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+
     </tag>
 
     <tag>
@@ -43,6 +44,41 @@
             <required>true</required>
             <rtexprvalue>true</rtexprvalue>
         </attribute>
+
+    </tag>
+
+    <tag>
+        <name>tickets-table</name>
+        <tag-class>com.tsystems.webrailwaysystem.tags.TicketsTableTag</tag-class>
+        <body-content>empty</body-content>
+        <description>This tag is for displaying tickets list with train, route and passenger info</description>
+
+        <attribute>
+            <name>ticketsList</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+        <attribute>
+            <name>checkboxClass</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
+    <tag>
+        <name>routes-trains-tree</name>
+        <tag-class>com.tsystems.webrailwaysystem.tags.TrainsByRoutesTreeTag</tag-class>
+        <body-content>empty</body-content>
+        <description>This tag is for displaying tree of routes with attached trains from shedule</description>
+
+        <attribute>
+            <name>sheduleItemsByRoutesMap</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
     </tag>
 
 </taglib>

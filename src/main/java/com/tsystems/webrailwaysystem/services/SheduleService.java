@@ -1,6 +1,7 @@
 package com.tsystems.webrailwaysystem.services;
 
 import com.tsystems.webrailwaysystem.dao.SheduleDAO;
+import com.tsystems.webrailwaysystem.entities.RouteEntity;
 import com.tsystems.webrailwaysystem.entities.SheduleItemEntity;
 import com.tsystems.webrailwaysystem.entities.StationEntity;
 import com.tsystems.webrailwaysystem.entities.StationInfoEntity;
@@ -53,15 +54,34 @@ public class SheduleService {
         return this.sheduleDAO.getAll();
     }
 
+    @Transactional(readOnly = true)
+    public Map<RouteEntity, List<SheduleItemEntity>> getAllSheduleItemsGroupByRoutes() {
+        Map<RouteEntity, List<SheduleItemEntity>> sheduleItemsByRoutesMap =
+                new HashMap<RouteEntity, List<SheduleItemEntity>>();
+
+        for(SheduleItemEntity sheduleItem : this.sheduleDAO.getAll()) {
+            if(!sheduleItemsByRoutesMap.containsKey(sheduleItem.getRoute())) {
+                List<SheduleItemEntity> sheduleItemsList = new ArrayList<SheduleItemEntity>();
+                sheduleItemsList.add(sheduleItem);
+                sheduleItemsByRoutesMap.put(sheduleItem.getRoute(), sheduleItemsList);
+            } else {
+                List<SheduleItemEntity> sheduleItemsList = sheduleItemsByRoutesMap.get(sheduleItem.getRoute());
+                sheduleItemsList.add(sheduleItem);
+            }
+        }
+
+        return sheduleItemsByRoutesMap;
+    }
+
     /**
-     * Contract: get some SheduleItems with associated list of tickets
+     * Contract: get some SheduleItems with associated list of tickets by routeId
      *
-     * @param sheduleItemsList for which SheduleItems need info, used as a filter, as a condition
+     * @param routeId for which SheduleItems info need
      * @return
      */
     @Transactional(readOnly = true)
-    public List<SheduleItemEntity> getWithTicketsBySheduleItems(List<SheduleItemEntity> sheduleItemsList) {
-        return this.sheduleDAO.getBySheduleItems(sheduleItemsList);
+    public List<SheduleItemEntity> getSheduleItemsByRouteId(int routeId) {
+        return this.sheduleDAO.getByRouteId(routeId);
     }
 
     /**

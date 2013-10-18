@@ -1,0 +1,7 @@
+.loading {
+    background-image: url("ajax-loader.gif");
+    background-position: 130px 100px;
+    background-repeat: repeat;
+    height: 50px;
+    width: 40px;
+}

@@ -1,6 +1,8 @@
 package com.tsystems.webrailwaysystem.entities;
 
 
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -30,6 +32,7 @@ public class StationEntity extends AbstractEntity implements Cloneable {
     @ManyToOne
     @JoinColumn(name = "route_id")
     @NotNull(message = "Route must be not null")
+    @JsonManagedReference
     private RouteEntity route;
 
     @ManyToOne

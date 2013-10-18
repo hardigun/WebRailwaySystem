@@ -84,4 +84,15 @@ public class SheduleDAO extends AbstractDAO {
         return query.list();
     }
 
+    public List<SheduleItemEntity> getByRouteId(int routeId) {
+        String queryStr = "SELECT sheduleItem FROM SheduleItemEntity AS sheduleItem" +
+                " INNER JOIN sheduleItem.route AS route" +
+                " INNER JOIN sheduleItem.train AS train" +
+                " WHERE sheduleItem.route.id = :routeId" +
+                " ORDER BY train.trainNumber";
+        Query query = this.getSessionFactory().getCurrentSession().createQuery(queryStr);
+        query.setParameter("routeId", routeId);
+        return query.list();
+    }
+
 }

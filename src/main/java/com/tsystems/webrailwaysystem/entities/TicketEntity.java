@@ -11,6 +11,9 @@ package com.tsystems.webrailwaysystem.entities;
  * Date: 24.09.13
  */
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.text.SimpleDateFormat;
@@ -25,11 +28,13 @@ public class TicketEntity extends AbstractEntity {
     @ManyToOne
     @JoinColumn (name = "shedule_id")
     @NotNull(message = "Shedule item must be not null")
+    @JsonIgnore
     private SheduleItemEntity sheduleItem;
 
     @ManyToOne
     @JoinColumn (name = "passenger_id")
     @NotNull(message = "Passenger must be not null")
+    @JsonManagedReference
     private PassengerEntity passenger;
 
     public boolean isSaleConfirmed() {

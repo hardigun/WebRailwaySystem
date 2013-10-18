@@ -7,18 +7,18 @@
   <head>
         <title>Search trains</title>
         <spring:url value="/resources/jquery-1.10.2.min.js" var="jquery_url" />
-        <spring:url value="/resources/shedule-by-station.js" var="shedule_scripts_url" />
+        <spring:url value="/resources/shedule-search.js" var="shedule_scripts_url" />
         <script src="${jquery_url}"></script>
         <script src="${shedule_scripts_url}"></script>
   </head>
   <body>
 
-        <form:form modelAttribute="stationsFilter" method="POST" action="/shedule/between-stations">
+        <form:form modelAttribute="stationsFilter" method="POST" action="/shedule/search/between-stations">
           <fieldset>
               <legend>Search trains params</legend>
               <table>
                   <tr>
-                      <td><form:label path="stationInfoFrom">Select departure station: </form:label></td>
+                      <td><form:label path="stationInfoFrom">Select arrival station: </form:label></td>
                       <td>
                           <form:select path="stationInfoFrom">
                               <c:forEach items="${stationInfoList}" var="stationInfoFromList">
@@ -52,19 +52,19 @@
                   </tr>
 
                   <tr>
-                      <td><form:label path="startDate">Enter date(ex. 25.10.2013 17:00): </form:label></td>
+                      <td><form:label path="startDate">Enter start of dates range(ex. 25.10.2013 17:00): </form:label></td>
                       <td><form:input path="startDate" /></td>
                       <td><form:errors path="startDate" /></td>
                   </tr>
 
                   <tr>
-                      <td><form:label path="endDate">Enter date(ex. 26.10.2013 18:00): </form:label></td>
+                      <td><form:label path="endDate">Enter end of dates range(ex. 26.10.2013 18:00): </form:label></td>
                       <td><form:input path="endDate" /></td>
                       <td><form:errors path="endDate" /></td>
                   </tr>
 
                   <tr>
-                      <td colspan="3"><input type="submit" value="Submit" /></td>
+                      <td colspan="3"><input type="submit" value="Search" /></td>
                   </tr>
               </table>
           </fieldset>
@@ -74,7 +74,7 @@
           <form id="buyForm" method="GET" action="/ticket/buy/{id}">
               <input type="button" id="buyButton" value="Buy">
           </form>
-          <railwaysystem:stations-table sheduleItemsList="${sheduleItemsList}" radioClass="sheduleItemsClass" />
+          <railwaysystem:stations-table sheduleItemsList="${sheduleItemsList}" radioClass="sheduleItemRadio" />
         </c:if>
 
   </body>

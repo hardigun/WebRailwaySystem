@@ -1,5 +1,7 @@
 package com.tsystems.webrailwaysystem.entities;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Column;
@@ -29,9 +31,11 @@ public class RouteEntity extends AbstractEntity implements Cloneable{
 
     @OneToMany(mappedBy = "route")
     @Size(min = 2, message = "Route should have minimum two stations")
+    @JsonBackReference
     private List<StationEntity> stationsList = new ArrayList<StationEntity>();
 
     @OneToMany(mappedBy = "route")
+    @JsonBackReference
     private List<SheduleItemEntity> sheduleList = new ArrayList<SheduleItemEntity>();
 
     public String getRouteNumber() {

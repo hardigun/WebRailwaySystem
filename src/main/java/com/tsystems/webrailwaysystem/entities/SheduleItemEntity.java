@@ -1,5 +1,8 @@
 package com.tsystems.webrailwaysystem.entities;
 
+import org.codehaus.jackson.annotate.JsonBackReference;
+import org.codehaus.jackson.annotate.JsonManagedReference;
+
 import javax.persistence.*;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
@@ -32,11 +35,13 @@ public class SheduleItemEntity extends AbstractEntity implements Cloneable {
     @ManyToOne
     @JoinColumn(name = "route_id")
     @NotNull(message = "Route must be not null")
+    @JsonManagedReference
     private RouteEntity route;
 
     @ManyToOne
     @JoinColumn(name = "train_id")
     @NotNull(message = "Train must be not null")
+    @JsonManagedReference
     private TrainEntity train;
 
     @OneToMany(mappedBy = "sheduleItem", fetch = FetchType.EAGER)
