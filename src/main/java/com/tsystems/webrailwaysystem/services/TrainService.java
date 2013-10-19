@@ -54,7 +54,7 @@ public class TrainService {
 
     @Transactional
     public TrainEntity getTrain(int id) {
-        return (TrainEntity) this.trainDAO.getById(TrainEntity.class, id);
+        return this.trainDAO.getById(TrainEntity.class, id);
     }
 
     /**

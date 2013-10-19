@@ -15,7 +15,7 @@ import java.util.List;
  * Date: 24.09.13
  */
 @Repository("ticketDAO")
-public class TicketDAO extends AbstractDAO {
+public class TicketDAO extends AbstractDAO<TicketEntity> {
 
     /**
      * Contract: get all tickets for SheduleItem

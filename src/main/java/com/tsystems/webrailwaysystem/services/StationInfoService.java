@@ -57,7 +57,7 @@ public class StationInfoService {
 
     @Transactional(readOnly = true)
     public StationInfoEntity getStationInfo(int id) {
-        return (StationInfoEntity) this.stationInfoDAO.getById(StationInfoEntity.class, id);
+        return this.stationInfoDAO.getById(StationInfoEntity.class, id);
     }
 
     /**

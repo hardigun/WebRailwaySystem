@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 17.09.13
  */
 @Repository("sheduleDAO")
-public class SheduleDAO extends AbstractDAO {
+public class SheduleDAO extends AbstractDAO<SheduleItemEntity> {
 
     public List<SheduleItemEntity> getAll() {
         String query = "SELECT sheduleItem FROM SheduleItemEntity AS sheduleItem" +

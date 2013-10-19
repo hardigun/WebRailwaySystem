@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 24.09.13
  */
 @Repository("passengerDAO")
-public class PassengerDAO extends AbstractDAO {
+public class PassengerDAO extends AbstractDAO<PassengerEntity> {
 
     /**
      * Contract: get all passengers with same name, surname and birthday;

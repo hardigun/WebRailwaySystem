@@ -14,7 +14,7 @@ import java.util.List;
  * Date: 10.09.13
  */
 @Repository("trainDAO")
-public class TrainDAO extends AbstractDAO {
+public class TrainDAO extends AbstractDAO<TrainEntity> {
 
     public List<TrainEntity> getAll() {
         String queryStr = "FROM TrainEntity ORDER BY trainNumber ASC";

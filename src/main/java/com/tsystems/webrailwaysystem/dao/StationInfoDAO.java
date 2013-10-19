@@ -17,7 +17,7 @@ import java.util.Map;
  * Date: 17.09.13
  */
 @Repository("stationInfoDAO")
-public class StationInfoDAO extends AbstractDAO {
+public class StationInfoDAO extends AbstractDAO<StationInfoEntity> {
 
     public List<StationInfoEntity> getAll() {
         String queryStr = "FROM StationInfoEntity ORDER BY title ASC";

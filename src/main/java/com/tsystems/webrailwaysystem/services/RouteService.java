@@ -54,7 +54,7 @@ public class RouteService {
 
     @Transactional(readOnly = true)
     public RouteEntity getRoute(int id) {
-        return (RouteEntity) this.routeDAO.getById(RouteEntity.class, id);
+        return this.routeDAO.getById(RouteEntity.class, id);
     }
 
     /**

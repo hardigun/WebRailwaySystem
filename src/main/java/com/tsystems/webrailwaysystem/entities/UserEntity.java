@@ -1,6 +1,7 @@
 package com.tsystems.webrailwaysystem.entities;
 
 import com.tsystems.webrailwaysystem.enums.EUserRoles;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -20,9 +21,12 @@ import java.util.Date;
 
 @Entity
 @Table(name = "users", uniqueConstraints = {
-        @UniqueConstraint(columnNames = {"name", "surname"})
+        @UniqueConstraint(columnNames = {"login"})
 })
 public class UserEntity extends AbstractEntity implements Comparable<UserEntity> {
+
+    @NotEmpty(message = "Login must be not empty")
+    private String login;
 
     @Size(min = 2, max = 255, message = "Name size must be between 2 and 255")
     private String name;
@@ -34,10 +38,12 @@ public class UserEntity extends AbstractEntity implements Comparable<UserEntity>
     @Column(name = "user_pass")
     private String userPass;
 
+    @NotNull(message = "Birthday must be not null")
+    private Date birthday;
+
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "User role must be not null")
     @Column(name = "user_role")
-    private EUserRoles userRole;
+    private EUserRoles userRole = EUserRoles.CLIENT;
 
     @Column(name="reg_date")
     private Date regDate;
@@ -46,12 +52,21 @@ public class UserEntity extends AbstractEntity implements Comparable<UserEntity>
 
     }
 
-    public UserEntity(int id, String name, String surname, EUserRoles userRole, Date regDate) {
+    public UserEntity(int id, String login, String name, String surname, EUserRoles userRole, Date regDate) {
         this.setId(id);
+        this.setLogin(login);
         this.setName(name);
         this.setSurname(surname);
         this.setUserRole(userRole);
         this.setRegDate(regDate);
+    }
+
+    public String getLogin() {
+        return login;
+    }
+
+    public void setLogin(String login) {
+        this.login = login;
     }
 
     public String getName() {
@@ -76,6 +91,14 @@ public class UserEntity extends AbstractEntity implements Comparable<UserEntity>
 
     public void setUserPass(String userPass) {
         this.userPass = userPass;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
     }
 
     public EUserRoles getUserRole() {

@@ -1,13 +1,11 @@
 package com.tsystems.webrailwaysystem.controllers;
 
-import com.tsystems.webrailwaysystem.entities.RouteEntity;
-import com.tsystems.webrailwaysystem.entities.SheduleItemEntity;
-import com.tsystems.webrailwaysystem.entities.StationEntity;
-import com.tsystems.webrailwaysystem.entities.TicketEntity;
+import com.tsystems.webrailwaysystem.entities.*;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.services.SheduleService;
 import com.tsystems.webrailwaysystem.services.StationService;
 import com.tsystems.webrailwaysystem.services.TicketService;
+import com.tsystems.webrailwaysystem.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpRequest;
@@ -36,6 +34,9 @@ public class RESTController {
 
     @Autowired
     private StationService stationService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/get/trains-by-routes", method = RequestMethod.GET)
     @ResponseBody
@@ -70,4 +71,15 @@ public class RESTController {
         return this.stationService.getStationsByRouteId(routeId);
     }
 
+    @RequestMapping(value = "/user/remove/{userId}", method = RequestMethod.GET)
+    @ResponseBody
+    public boolean removeUser(@PathVariable int userId) {
+        boolean result = false;
+        UserEntity user = new UserEntity();
+        user.setId(userId);
+        if(this.userService.removeUser(user) > 0) {
+            result = true;
+        }
+        return result;
+    }
 }

@@ -53,4 +53,10 @@
 
     <mvc:resources mapping="/resources/**" location="/js/, /css/, /img/" />
     <mvc:annotation-driven validator="validator" conversion-service="conversionService" />
+    <mvc:interceptors>
+        <bean class="org.springframework.web.servlet.mvc.WebContentInterceptor">
+            <property name="cacheSeconds" value="0" />
+        </bean>
+    </mvc:interceptors>
+
 </beans>

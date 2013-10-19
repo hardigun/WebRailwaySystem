@@ -11,7 +11,7 @@ import java.util.List;
  * Date: 16.09.13
  */
 @Repository("routeDAO")
-public class RouteDAO extends AbstractDAO {
+public class RouteDAO extends AbstractDAO<RouteEntity> {
 
     public List<RouteEntity> getAll() {
         String queryStr = "FROM RouteEntity ORDER BY routeNumber ASC";

@@ -13,7 +13,7 @@ import java.util.List;
  * Date: 17.09.13
  */
 @Repository("stationDAO")
-public class StationDAO extends AbstractDAO {
+public class StationDAO extends AbstractDAO<StationEntity> {
 
     /**
      * Contract: get list of StationEntity that include routeEntity

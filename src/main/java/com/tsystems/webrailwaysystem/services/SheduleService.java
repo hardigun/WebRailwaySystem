@@ -46,7 +46,7 @@ public class SheduleService {
 
     @Transactional(readOnly = true)
     public SheduleItemEntity getSheduleItem(int id) {
-        return (SheduleItemEntity) this.sheduleDAO.getById(SheduleItemEntity.class, id);
+        return this.sheduleDAO.getById(SheduleItemEntity.class, id);
     }
 
     @Transactional(readOnly = true)
