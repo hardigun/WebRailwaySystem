@@ -33,8 +33,8 @@ public class TicketsTableTag extends SimpleTagSupport {
             StringBuffer outBuf = new StringBuffer();
             String tHeader = "<tr><td></td><td>Train number</td><td>Route number</td><td>Departure date</td>" +
                              "<td>Passenger surname</td><td>Passenger name</td><td>Passenger birthday</td>" +
-                             "<td>Is ticket confirmed</td>";
-            outBuf.append("<table id='ticketsTable'>").append(tHeader);
+                             "<td>Is ticket confirmed</td></tr>";
+            outBuf.append("<table id='ticketsTable' class='CSSTableGenerator'>").append(tHeader);
 
             for(TicketEntity ticket : this.ticketsList) {
                 outBuf.append("<tr><td><input type='checkbox' class='").append(this.checkboxClass).append("' id='ticket_")
@@ -51,6 +51,7 @@ public class TicketsTableTag extends SimpleTagSupport {
                       .append(ticket.isSaleConfirmed()).append("</td></tr>");
             }
 
+            outBuf.append("</table>");
             out.println(outBuf.toString());
         } catch(Exception exc) {
             exc.printStackTrace();

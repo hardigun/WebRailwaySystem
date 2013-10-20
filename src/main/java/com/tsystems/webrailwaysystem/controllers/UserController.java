@@ -1,7 +1,9 @@
 package com.tsystems.webrailwaysystem.controllers;
 
 import com.tsystems.webrailwaysystem.dao.UserDAO;
+import com.tsystems.webrailwaysystem.entities.Message;
 import com.tsystems.webrailwaysystem.entities.UserEntity;
+import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.enums.EUserRoles;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.exceptions.UserAlreadyRegisterException;
@@ -40,7 +42,7 @@ public class UserController {
             user = this.userService.getByLogin(login);
         } catch (UserNotFoundException e) {
             LOGGER.debug("Profile for user with login " + login + " not found");
-            return "redirect:/index.jsp";
+            return "redirect:/";
         }
         uiModel.addAttribute("userEntity", user);
         return "user/show";
@@ -71,10 +73,10 @@ public class UserController {
             }
         } catch(RailwaySystemException exc) {
             LOGGER.debug(exc + "(Login: " + user.getLogin() + ")");
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
             return new ModelAndView("user/add", "userEntity", user);
         }
-        uiModel.addAttribute("resultMessage", "Operation execute success!");
+        uiModel.addAttribute("message", new Message("Operation execute success!", EMessageType.SUCCESS));
         if(isupdate) {
             if(request.isUserInRole("ROLE_ADMIN")) {
                 uiModel.addAttribute("usersList", this.userService.getAll());

@@ -30,7 +30,7 @@ public class SheduleTableTag extends SimpleTagSupport {
         JspWriter out = pageContext.getOut();
         try {
             StringBuffer resultBuf = new StringBuffer();
-            resultBuf.append("<table><tr><th></th><th>Train number</th><th>Date and time</th></tr>");
+            resultBuf.append("<table class='CSSTableGenerator'><tr><td></td><td>Train number</td><td>Date and time</td></tr>");
             for(SheduleItemEntity sheduleItem : this.getSheduleItemsList()) {
                 resultBuf.append("<tr>");
 

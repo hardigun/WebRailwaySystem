@@ -81,4 +81,18 @@
 
     </tag>
 
+    <tag>
+        <name>message-handler</name>
+        <tag-class>com.tsystems.webrailwaysystem.tags.MessageHandlerTag</tag-class>
+        <body-content>empty</body-content>
+        <description>This tag is for parse result message and view concrete div block</description>
+
+        <attribute>
+            <name>message</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+        </attribute>
+
+    </tag>
+
 </taglib>

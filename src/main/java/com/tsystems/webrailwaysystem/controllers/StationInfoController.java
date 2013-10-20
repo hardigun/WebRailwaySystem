@@ -1,6 +1,8 @@
 package com.tsystems.webrailwaysystem.controllers;
 
+import com.tsystems.webrailwaysystem.entities.Message;
 import com.tsystems.webrailwaysystem.entities.StationInfoEntity;
+import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.services.StationInfoService;
 import org.apache.log4j.Logger;
@@ -44,10 +46,10 @@ public class StationInfoController {
 
         try {
             this.stationInfoService.addStationInfo(stationInfo);
-            uiModel.addAttribute("resultMessage", "Successfully added");
+            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         } catch(RailwaySystemException exc) {
             LOGGER.debug("Error while adding StationInfoEntity");
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
         }
 
         return new ModelAndView("station-info/add", "stationInfoEntity", new StationInfoEntity());

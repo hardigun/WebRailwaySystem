@@ -1,12 +1,12 @@
 package com.tsystems.webrailwaysystem.controllers;
 
-import com.tsystems.webrailwaysystem.entities.PassengerEntity;
-import com.tsystems.webrailwaysystem.entities.SheduleItemEntity;
-import com.tsystems.webrailwaysystem.entities.TicketEntity;
+import com.tsystems.webrailwaysystem.entities.*;
+import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.filters.TicketsFilter;
 import com.tsystems.webrailwaysystem.services.SheduleService;
 import com.tsystems.webrailwaysystem.services.TicketService;
+import com.tsystems.webrailwaysystem.services.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 /**
@@ -34,6 +35,9 @@ public class TicketController {
 
     @Autowired
     private TicketService ticketService;
+
+    @Autowired
+    private UserService userService;
 
     @RequestMapping(value = "/show", method = RequestMethod.GET)
     public ModelAndView showPassengers() {
@@ -57,17 +61,34 @@ public class TicketController {
     }
 
     @RequestMapping(value = "/buy/{id}", method = RequestMethod.GET)
-    public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, Model uiModel) {
+    public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, Model uiModel, HttpServletRequest request) {
         SheduleItemEntity sheduleItem = new SheduleItemEntity();
         sheduleItem.setId(sheduleItemId);
         try {
             sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
         } catch(RailwaySystemException exc) {
             LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
         }
         uiModel.addAttribute("sheduleItem", sheduleItem);
-        return new ModelAndView("ticket/buy", "passengerEntity", new PassengerEntity());
+
+        PassengerEntity passenger = new PassengerEntity();
+        /* if user register then fill passenger info form with data from user account */
+        UserEntity user = null;
+        try {
+            user = this.userService.getByLogin(request.getUserPrincipal().getName());
+        } catch(Exception exc) {
+            exc.printStackTrace();
+            LOGGER.warn(exc);
+        }
+        if(user != null) {
+            passenger.setName(user.getName());
+            passenger.setSurname(user.getSurname());
+            passenger.setBirthday(user.getBirthday());
+        }
+        /*---------*/
+
+        return new ModelAndView("ticket/buy", "passengerEntity", passenger);
     }
 
     @RequestMapping(value = "/buy/{id}", method = RequestMethod.POST)
@@ -79,10 +100,10 @@ public class TicketController {
             sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
         } catch(RailwaySystemException exc) {
             LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
         }
         uiModel.addAttribute("sheduleItem", sheduleItem);
-        if(uiModel.containsAttribute("resultMessage")) {
+        if(uiModel.containsAttribute("message")) {
             return new ModelAndView("ticket/buy", "passengerEntity", new PassengerEntity());
         }
 
@@ -93,10 +114,10 @@ public class TicketController {
 
         try {
             TicketEntity ticket = this.ticketService.buyExecute(passenger, sheduleItem);
-            uiModel.addAttribute("resultMessage", "Successfully ticket buy! " + ticket.toString());
+            uiModel.addAttribute("message", new Message("Successfully buy ticket! " + ticket.toString(), EMessageType.SUCCESS));
         } catch(RailwaySystemException exc) {
             LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
             return new ModelAndView("ticket/buy", "passengerEntity", passenger);
         }
 

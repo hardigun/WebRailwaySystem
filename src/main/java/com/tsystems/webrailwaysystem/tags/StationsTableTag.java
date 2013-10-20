@@ -30,7 +30,7 @@ public class StationsTableTag extends SimpleTagSupport {
         JspWriter out = pageContext.getOut();
         try {
             StringBuffer resultBuf = new StringBuffer();
-            resultBuf.append("<table><tr><th></th><th>Train number</th><th>Departure</th><th>Arrival</th></tr>");
+            resultBuf.append("<table class='CSSTableGenerator'><tr><td></td><td>Train number</td><td>Departure</td><td>Arrival</td></tr>");
 
             for(SheduleItemEntity sheduleItem : this.getSheduleItemsList()) {
                 resultBuf.append("<tr>");

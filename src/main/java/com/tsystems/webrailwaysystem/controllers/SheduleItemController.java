@@ -1,8 +1,10 @@
 package com.tsystems.webrailwaysystem.controllers;
 
+import com.tsystems.webrailwaysystem.entities.Message;
 import com.tsystems.webrailwaysystem.entities.PassengerEntity;
 import com.tsystems.webrailwaysystem.entities.SheduleItemEntity;
 import com.tsystems.webrailwaysystem.entities.StationEntity;
+import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.filters.SheduleFilter;
 import com.tsystems.webrailwaysystem.filters.StationsFilter;
@@ -66,10 +68,10 @@ public class SheduleItemController {
 
         try {
             this.sheduleService.addSheduleItem(sheduleItem);
-            uiModel.addAttribute("resultMessage", "Success");
+            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         } catch (RailwaySystemException exc) {
             LOGGER.debug("Error while adding SheduleItemEntity");
-            uiModel.addAttribute("resultMessage", exc.getMessage());
+            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
         }
         return new ModelAndView("shedule/add", "sheduleItemEntity", new SheduleItemEntity());
     }

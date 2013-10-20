@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE tiles-definitions PUBLIC
+        "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN"
+        "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+
+<tiles-definitions>
+    <definition name="default" template="/WEB-INF/views/layouts/default.jsp">
+        <put-attribute name="header" value="/WEB-INF/views/layouts/header.jsp" />
+        <put-attribute name="menu" value="/WEB-INF/views/layouts/menu.jsp" />
+        <put-attribute name="footer" value="/WEB-INF/views//layouts/footer.jsp" />
+    </definition>
+
+    <definition name="index" extends="default">
+        <put-attribute name="title" value="WebRailwaySystem" />
+        <put-attribute name="body" value="/WEB-INF/views/index.jsp" />
+    </definition>
+
+    <definition name="auth/denied" extends="default">
+        <put-attribute name="title" value="Access deny" />
+        <put-attribute name="body" value="/WEB-INF/views/auth/denied.jsp" />
+    </definition>
+
+    <definition name="auth/login" extends="default">
+        <put-attribute name="title" value="Login" />
+        <put-attribute name="body" value="/WEB-INF/views/auth/login.jsp" />
+    </definition>
+
+    <definition name="user/add" extends="default">
+        <put-attribute name="title" value="User info" />
+        <put-attribute name="body" value="/WEB-INF/views/user/add.jsp" />
+    </definition>
+
+    <definition name="user/show" extends="default">
+        <put-attribute name="title" value="Profile" />
+        <put-attribute name="body" value="/WEB-INF/views/user/show.jsp" />
+    </definition>
+
+    <definition name="user/list" extends="default">
+        <put-attribute name="title" value="List of all system users" />
+        <put-attribute name="body" value="/WEB-INF/views/user/list.jsp" />
+    </definition>
+
+    <definition name="shedule/add" extends="default">
+        <put-attribute name="title" value="Add shedule item" />
+        <put-attribute name="body" value="/WEB-INF/views/shedule/add.jsp" />
+    </definition>
+
+    <definition name="shedule/search/by-station" extends="default">
+        <put-attribute name="title" value="Shedule" />
+        <put-attribute name="body" value="/WEB-INF/views/shedule/search/by-station.jsp" />
+    </definition>
+
+    <definition name="shedule/search/between-stations" extends="default">
+        <put-attribute name="title" value="Search" />
+        <put-attribute name="body" value="/WEB-INF/views/shedule/search/between-stations.jsp" />
+    </definition>
+
+    <definition name="shedule/show/trains-by-routes" extends="default">
+        <put-attribute name="title" value="Trains by routes" />
+        <put-attribute name="body" value="/WEB-INF/views/shedule/show/trains-by-routes.jsp" />
+    </definition>
+
+    <definition name="station-info/add" extends="default">
+        <put-attribute name="title" value="Add station info" />
+        <put-attribute name="body" value="/WEB-INF/views/station-info/add.jsp" />
+    </definition>
+
+    <definition name="station-info/list" extends="default">
+        <put-attribute name="title" value="List station info" />
+        <put-attribute name="body" value="/WEB-INF/views/station-info/list.jsp" />
+    </definition>
+
+    <definition name="train/add" extends="default">
+        <put-attribute name="title" value="Add train" />
+        <put-attribute name="body" value="/WEB-INF/views/train/add.jsp" />
+    </definition>
+
+    <definition name="train/list-of-unused" extends="default">
+        <put-attribute name="title" value="List of unused trains" />
+        <put-attribute name="body" value="/WEB-INF/views/train/list-of-unused.jsp" />
+    </definition>
+
+    <definition name="route/add" extends="default">
+        <put-attribute name="title" value="Add route" />
+        <put-attribute name="body" value="/WEB-INF/views/route/add.jsp" />
+    </definition>
+
+    <definition name="route/list-of-unused" extends="default">
+        <put-attribute name="title" value="List of unused routes" />
+        <put-attribute name="body" value="/WEB-INF/views/route/list-of-unused.jsp" />
+    </definition>
+
+    <definition name="ticket/show" extends="default">
+        <put-attribute name="title" value="Show passengers with tickets" />
+        <put-attribute name="body" value="/WEB-INF/views/ticket/show.jsp" />
+    </definition>
+
+    <definition name="ticket/buy" extends="default">
+        <put-attribute name="title" value="Buy ticket" />
+        <put-attribute name="body" value="/WEB-INF/views/ticket/buy.jsp" />
+    </definition>
+
+</tiles-definitions>
