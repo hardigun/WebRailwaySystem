@@ -8,4 +8,13 @@ $(document).ready(function() {
             }
         });
     });
+
+    $(".date-input").datepicker({
+        dateFormat: "dd.mm.yy"
+    });
+
+    $(".date-time-input").datetimepicker({
+        dateFormat: "dd.mm.yy",
+        timeFormat: "HH:mm"
+    })
 });

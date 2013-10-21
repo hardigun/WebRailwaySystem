@@ -25,6 +25,8 @@
         </tr>
     </table>
 
+    <br/>
+
     <table id="routeStationsTable" class="CSSTableGenerator" style="display: none;"></table>
 </div>
 

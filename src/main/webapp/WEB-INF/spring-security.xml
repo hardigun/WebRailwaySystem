@@ -8,9 +8,24 @@
        http://www.springframework.org/schema/security/spring-security.xsd">
 
     <security:http auto-config="true" use-expressions="true" access-denied-page="/auth/denied">
-        <security:intercept-url pattern="/station-info/add" access="hasRole('ROLE_MANAGER')" />
 
-        <security:intercept-url pattern="/user/" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/ticket/confirm" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/ticket/show" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/ticket/show/{id}" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/station-info/add" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/route/add" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/shedule/add" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/train/add" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/train/list-of-unused" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/station-info/list" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/route/list-of-unused" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/show/trains-by-routes" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/get/trains-by-routes" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/get/trains-by-routes/{routeId}" access="hasRole('ROLE_MANAGER')" />
+        <security:intercept-url pattern="/get/route-stations/{routeId}" access="hasRole('ROLE_MANAGER')" />
+
+        <security:intercept-url pattern="/user/list" access="hasRole('ROLE_ADMIN')" />
+        <security:intercept-url pattern="/user/remove/{userId}" access="hasRole('ROLE_ADMIN')" />
 
         <security:form-login login-page="/auth/login" authentication-failure-url="/auth/login?error=true" />
         <security:logout logout-url="/auth/logout" invalidate-session="true" logout-success-url="/" />

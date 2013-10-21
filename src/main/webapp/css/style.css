@@ -285,3 +285,7 @@ html>body .menu-item a {
     background-color: #DED9F7;
     padding: 10px;
 }
+
+div.ui-datepicker {
+    font-size: 12px;
+}

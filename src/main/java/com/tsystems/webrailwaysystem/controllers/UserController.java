@@ -36,7 +36,10 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping(value = "/show/{login}", method = RequestMethod.GET)
-    public String showUser(@PathVariable String login, Model uiModel) {
+    public String showUser(@PathVariable String login, Model uiModel, HttpServletRequest request) {
+        if(!request.isUserInRole("ROLE_ADMIN") && !request.getUserPrincipal().getName().equals(login)) {
+            return "redirect:/auth/denied";
+        }
         UserEntity user;
         try {
             user = this.userService.getByLogin(login);
@@ -90,10 +93,15 @@ public class UserController {
     }
 
     @RequestMapping(value = "/edit/{userId}", method = RequestMethod.GET)
-    public ModelAndView editUser(@PathVariable int userId, Model uiModel) {
+    public ModelAndView editUser(@PathVariable int userId, Model uiModel, HttpServletRequest request) {
+        UserEntity user = this.userService.getUser(userId);
+        if(!request.isUserInRole("ROLE_ADMIN") &&
+                (user != null && !request.getUserPrincipal().getName().equals(user.getLogin()))) {
+            return new ModelAndView("redirect:/auth/denied");
+        }
         uiModel.addAttribute("userRoles", new EUserRoles[] { EUserRoles.CLIENT, EUserRoles.MANAGER });
         uiModel.addAttribute("isupdate", true);
-        return new ModelAndView("user/add", "userEntity", this.userService.getUser(userId));
+        return new ModelAndView("user/add", "userEntity", user);
     }
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)

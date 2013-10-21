@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="railwaysystem" uri="http://tsystem.com/tags/railwaysystem"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
@@ -41,13 +42,25 @@
           </tr>
 
           <tr>
-              <td><form:label path="startDate">Enter start of dates range(ex. 25.10.2013 17:00): </form:label></td>
-              <td><form:input path="startDate" /></td>
+              <td><form:label path="startDate">Enter start of dates range: </form:label></td>
+
+              <c:if test="${not empty stationsFilter}">
+                  <fmt:formatDate value='${stationsFilter.startDate}' pattern='dd.MM.yyyy HH:mm' var="date"/>
+              </c:if>
+              <td>
+                  <input name="startDate" class="date-time-input" value="<c:out value='${date}' default='' />"/></td>
+              </td>
           </tr>
 
           <tr>
-              <td><form:label path="endDate">Enter end of dates range(ex. 26.10.2013 18:00): </form:label></td>
-              <td><form:input path="endDate" /></td>
+              <td><form:label path="endDate">Enter end of dates range: </form:label></td>
+
+              <c:if test="${not empty stationsFilter}">
+                  <fmt:formatDate value='${stationsFilter.endDate}' pattern='dd.MM.yyyy HH:mm' var="date"/>
+              </c:if>
+              <td>
+                  <input name="endDate" class="date-time-input" value="<c:out value='${date}' default='' />"/></td>
+              </td>
           </tr>
 
           <tr>
