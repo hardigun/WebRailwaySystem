@@ -4,7 +4,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
   <head>
-        <title>WebRailwaySystem</title>
+        <title><tiles:insertAttribute name="title" ignore="true" /></title>
         <spring:url value="/resources/jquery-1.10.2.min.js" var="jquery_url" />
         <spring:url value="/resources/jquery-ui-1.10.3.custom.min.js" var="jquery_ui_url" />
         <spring:url value="/resources/datetimepicker.js" var="datetimepicker_scripts_url" />
@@ -15,6 +15,8 @@
         <spring:url value="/resources/datetimepicker.css" var="datetimepicker_styles_url" />
         <spring:url value="/resources/style.css" var="my_styles_url" />
 
+        <spring:url value="/resources/favicon.png" var="favicon_url" />
+
         <script src="${jquery_url}"></script>
         <script src="${jquery_ui_url}"></script>
         <script src="${datetimepicker_scripts_url}"></script>
@@ -24,6 +26,9 @@
         <link rel="stylesheet" type="text/css" href="${dynatree_styles_url}" />
         <link rel="stylesheet" type="text/css" href="${datetimepicker_styles_url}" />
         <link rel="stylesheet" type="text/css" href="${my_styles_url}" />
+
+        <link href="${favicon_url}" rel="icon" type="image/x-icon" />
+        <link href="${favicon_url}" rel="shortcut icon" type="image/x-icon" />
   </head>
   <body>
     <div id="container">

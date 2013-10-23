@@ -95,7 +95,9 @@ public class TicketService {
         ticket.setPassenger(passenger);
         ticket.setSheduleItem(sheduleItem);
 
-        this.passengerDAO.save(passenger);
+        if(passengersList.size() == 0) {
+            this.passengerDAO.save(passenger);
+        }
         this.ticketDAO.save(ticket);
 
         return ticket;

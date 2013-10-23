@@ -47,6 +47,7 @@ public class MessageHandlerTag extends SimpleTagSupport {
             }
 
             outBuf.append(message.getText()).append("</div>");
+            outBuf.append("<br/>");
             out.println(outBuf.toString());
 
         } catch(Exception exc) {

@@ -44,7 +44,7 @@ public class TrainsByRoutesTreeTag extends SimpleTagSupport {
                 resultBuf.append("<li id='route_").append(route.getId())
                         .append("' class='folder'>").append(route.getRouteNumber()).append("<ul>");
                 for(SheduleItemEntity sheduleItem : sheduleItemsList) {
-                    resultBuf.append("<li id='train_").append(sheduleItem.getDepartureDate()).append("'>")
+                    resultBuf.append("<li id='train_").append(sheduleItem.getDepartureDate().getTime()).append("'>")
                              .append(sheduleItem.getTrain().toString()).append("<ul>");
 
                     resultBuf.append("<li id='shedule_item_").append(sheduleItem.getId())

@@ -8,7 +8,17 @@ package com.tsystems.webrailwaysystem.exceptions;
  */
 public class RailwaySystemException extends Exception {
 
-    protected String message = "Error occurred during the server work";
+    protected String message;
+
+    public RailwaySystemException() {
+        super();
+        this.message = "Error occurred during the server work";
+    }
+
+    public RailwaySystemException(String message) {
+        super();
+        this.message = message;
+    }
 
     @Override
     public String getMessage() {

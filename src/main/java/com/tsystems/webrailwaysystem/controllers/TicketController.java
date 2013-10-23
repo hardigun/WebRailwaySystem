@@ -2,7 +2,7 @@ package com.tsystems.webrailwaysystem.controllers;
 
 import com.tsystems.webrailwaysystem.entities.*;
 import com.tsystems.webrailwaysystem.enums.EMessageType;
-import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
+import com.tsystems.webrailwaysystem.exceptions.*;
 import com.tsystems.webrailwaysystem.filters.TicketsFilter;
 import com.tsystems.webrailwaysystem.services.SheduleService;
 import com.tsystems.webrailwaysystem.services.TicketService;
@@ -30,6 +30,10 @@ public class TicketController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
 
+    public String view = "";
+
+    public Model uiModel = null;
+
     @Autowired
     private SheduleService sheduleService;
 
@@ -50,77 +54,78 @@ public class TicketController {
         SheduleItemEntity sheduleItem = new SheduleItemEntity();
         sheduleItem.setId(sheduleItemId);
         ticketsFilter.setSheduleItem(sheduleItem);
+
+        /* if exception happens it helps save object state for user view */
+        this.view = "ticket/show";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("ticketsFilter", ticketsFilter);
+
         uiModel.addAttribute("ticketsList", this.ticketService.searchByParams(ticketsFilter));
         return new ModelAndView("ticket/show", "ticketsFilter", ticketsFilter);
     }
 
     @RequestMapping(value = "/show", method = RequestMethod.POST)
     public ModelAndView showPassenger(@ModelAttribute TicketsFilter ticketsFilter, Model uiModel) {
+        /* if exception happens it helps save object state for user view */
+        this.view = "ticket/show";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("ticketsFilter", ticketsFilter);
+
         uiModel.addAttribute("ticketsList", this.ticketService.searchByParams(ticketsFilter));
         return new ModelAndView("ticket/show", "ticketsFilter", ticketsFilter);
     }
 
     @RequestMapping(value = "/buy/{id}", method = RequestMethod.GET)
-    public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, Model uiModel, HttpServletRequest request) {
-        SheduleItemEntity sheduleItem = new SheduleItemEntity();
-        sheduleItem.setId(sheduleItemId);
-        try {
-            sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
-        } catch(RailwaySystemException exc) {
-            LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-        }
-        uiModel.addAttribute("sheduleItem", sheduleItem);
+    public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, Model uiModel, HttpServletRequest request)
+            throws NoAvailableSeatsException, ExpiredTimeToBuyException, UserNotFoundException {
 
         PassengerEntity passenger = new PassengerEntity();
         /* if user register then fill passenger info form with data from user account */
-        UserEntity user = null;
-        try {
-            user = this.userService.getByLogin(request.getUserPrincipal().getName());
-        } catch(Exception exc) {
-            exc.printStackTrace();
-            LOGGER.warn(exc);
-        }
-        if(user != null) {
+        if(!request.getUserPrincipal().getName().isEmpty()) {
+            UserEntity user = this.userService.getByLogin(request.getUserPrincipal().getName());
             passenger.setName(user.getName());
             passenger.setSurname(user.getSurname());
             passenger.setBirthday(user.getBirthday());
         }
-        /*---------*/
+
+        SheduleItemEntity sheduleItem = new SheduleItemEntity();
+        sheduleItem.setId(sheduleItemId);
+
+        /* if exception happens it helps save object state for user view */
+        this.view = "ticket/buy";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("passengerEntity", passenger);
+        this.uiModel.addAttribute("sheduleItem", sheduleItem);
+
+        sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
+        uiModel.addAttribute("sheduleItem", sheduleItem);
 
         return new ModelAndView("ticket/buy", "passengerEntity", passenger);
     }
 
     @RequestMapping(value = "/buy/{id}", method = RequestMethod.POST)
     public ModelAndView buyTicket(@PathVariable("id") int sheduleItemId, @ModelAttribute @Valid PassengerEntity passenger,
-                                  BindingResult bindingResult, Model uiModel) {
+                                  BindingResult bindingResult, Model uiModel)
+            throws NoAvailableSeatsException, ExpiredTimeToBuyException, PassengerAlreadyRegisterException {
+
         SheduleItemEntity sheduleItem = new SheduleItemEntity();
         sheduleItem.setId(sheduleItemId);
-        try {
-            sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
-        } catch(RailwaySystemException exc) {
-            LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-        }
-        uiModel.addAttribute("sheduleItem", sheduleItem);
-        if(uiModel.containsAttribute("message")) {
-            return new ModelAndView("ticket/buy", "passengerEntity", new PassengerEntity());
-        }
+
+        /* if exception happens it helps save object state for user view */
+        this.view = "ticket/buy";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("passengerEntity", passenger);
+        this.uiModel.addAttribute("sheduleItem", sheduleItem);
+
+        sheduleItem = this.sheduleService.checkTrainSeatsAndDate(sheduleItem);
 
         if(bindingResult.hasErrors()) {
             LOGGER.debug("Errors in the adding PassengerEntity");
             return new ModelAndView("ticket/buy", "passengerEntity", passenger);
         }
 
-        try {
-            TicketEntity ticket = this.ticketService.buyExecute(passenger, sheduleItem);
-            uiModel.addAttribute("message", new Message("Successfully buy ticket! " + ticket.toString(), EMessageType.SUCCESS));
-        } catch(RailwaySystemException exc) {
-            LOGGER.debug("Errors while buying ticket: " + exc.getMessage());
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-            return new ModelAndView("ticket/buy", "passengerEntity", passenger);
-        }
-
+        TicketEntity ticket = this.ticketService.buyExecute(passenger, sheduleItem);
+        uiModel.addAttribute("message", new Message("Successfully buy ticket! " + ticket.toString(), EMessageType.SUCCESS));
         return new ModelAndView("ticket/buy", "passengerEntity", new PassengerEntity());
     }
 

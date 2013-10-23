@@ -28,6 +28,10 @@ public class StationInfoController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
 
+    public String view = "";
+
+    public Model uiModel = null;
+
     @Autowired
     private StationInfoService stationInfoService;
 
@@ -39,19 +43,18 @@ public class StationInfoController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView addStationInfo(@ModelAttribute @Valid StationInfoEntity stationInfo, BindingResult bindingResult,
                                        Model uiModel) {
+
         if(bindingResult.hasErrors()) {
-            LOGGER.debug("Errors in the adding StationInfoEntity " + stationInfo);
             return new ModelAndView("station-info/add", "stationInfoEntity", stationInfo);
         }
 
-        try {
-            this.stationInfoService.addStationInfo(stationInfo);
-            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
-        } catch(RailwaySystemException exc) {
-            LOGGER.debug("Error while adding StationInfoEntity");
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-        }
+        /* if exception happens it helps save object state for user view */
+        this.view = "station-info/add";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("stationInfoEntity", stationInfo);
 
+        this.stationInfoService.addStationInfo(stationInfo);
+        uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         return new ModelAndView("station-info/add", "stationInfoEntity", new StationInfoEntity());
     }
 

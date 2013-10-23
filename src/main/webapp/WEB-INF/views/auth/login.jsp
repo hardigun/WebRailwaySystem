@@ -3,6 +3,7 @@
 <c:if test="${not empty param.error}">
     <div class="message-error">Failure, check your login and password!</div>
 </c:if>
+<br/>
 <form action="/j_spring_security_check" method="POST">
     <fieldset>
         <legend>Enter your login and password</legend>

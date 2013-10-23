@@ -45,7 +45,9 @@ public class SheduleTableTag extends SimpleTagSupport {
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
 
                 resultBuf.append("<td><input type='radio' name='sheduleItemsGroup' class='").append(this.radioClass)
-                         .append("' shedule_item_id='").append(String.valueOf(sheduleItem.getId())).append("' /></td>");
+                         .append("' shedule_item_id='").append(String.valueOf(sheduleItem.getId()))
+                         .append("' route_id='").append(sheduleItem.getRoute().getId())
+                         .append("' departure_date='").append(sheduleItem.getDepartureDate().getTime()).append("' /></td>");
                 resultBuf.append("<td>").append(sheduleItem.getTrain().getTrainNumber()).append("</td>");
                 resultBuf.append("<td>").append(simpleDateFormat.format(dateStation.getTime())).append("</td>");
 

@@ -1,9 +1,6 @@
 package com.tsystems.webrailwaysystem.controllers;
 
-import com.tsystems.webrailwaysystem.entities.Message;
-import com.tsystems.webrailwaysystem.entities.RouteEntity;
-import com.tsystems.webrailwaysystem.entities.StationEntity;
-import com.tsystems.webrailwaysystem.entities.StationInfoEntity;
+import com.tsystems.webrailwaysystem.entities.*;
 import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.services.RouteService;
@@ -14,12 +11,15 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.ConstraintViolation;
 import java.util.*;
 
 /**
@@ -30,6 +30,10 @@ import java.util.*;
 public class RouteController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
+
+    public String view = "";
+
+    public Model uiModel = null;
 
     @Autowired
     private RouteService routeService;
@@ -48,7 +52,9 @@ public class RouteController {
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public ModelAndView addRoute(@ModelAttribute RouteEntity route, HttpServletRequest request, Model uiModel) {
+    public ModelAndView addRoute(@ModelAttribute RouteEntity route, HttpServletRequest request, Model uiModel)
+            throws Exception {
+
         List<StationInfoEntity> stationInfoList = this.stationInfoService.getAllStationInfo();
         uiModel.addAttribute("stationInfoList", stationInfoList);
 
@@ -69,20 +75,19 @@ public class RouteController {
                 stationsErrorsMap.put(station, stationErrorMessage);
             }
         }
-        uiModel.addAttribute("stationsErrors", stationsErrorsMap);
+        uiModel.addAttribute("stationsErrors", stationsErrorsMap);;
 
         if(errorMessage.length() > 0 || stationsErrorsMap.size() > 0) {
             return new ModelAndView("route/add", "routeEntity", routeFromFactory);
         }
 
-        try {
-            this.routeService.addRoute(routeFromFactory);
-            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
-        } catch (RailwaySystemException exc) {
-            LOGGER.debug("Error while adding RouteEntity");
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-        }
+        /* if exception happens it helps save object state for user view */
+        this.view = "route/add";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("routeEntity", routeFromFactory);
 
+        this.routeService.addRoute(routeFromFactory);
+        uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         return new ModelAndView("route/add", "routeEntity", new RouteEntity());
     }
 

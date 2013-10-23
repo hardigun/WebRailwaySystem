@@ -39,12 +39,19 @@
     </fieldset>
 </form:form>
 
+<div id="loading-stations" class="loading" style="visibility: hidden;"></div>
+
 <c:if test="${not empty sheduleItemsList}">
     <form id="buyForm" method="GET" action="/ticket/buy/{id}">
         <input type="button" id="buyButton" value="Buy">
+        <input type="button" id="showStationsButton" value="Show stations">
     </form>
     <railwaysystem:shedule-table sheduleItemsList="${sheduleItemsList}" radioClass="sheduleItemRadio" />
 </c:if>
+
+<br/>
+
+<table id="routeStationsTable" class="CSSTableGenerator" style="display: none;"></table>
 
 <spring:url value="/resources/shedule-search.js" var="shedule_scripts_url" />
 <script src="${shedule_scripts_url}"></script>

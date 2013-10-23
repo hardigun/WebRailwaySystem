@@ -8,7 +8,9 @@ var TableHandler = function(tableNameIn, clonedSelectNameIn, checkboxClassIn){
         "row_id='station_{index}' /></td>";
     this.stationInfoTemplate = "<td><select id='stationinfo_{index}' name='stationsinfo[]'>" +
                                 "{options}</select></td>";
-    this.timeOffsetTemplate = "<td><input type='text' id='timeoffset_{index}' name='timeoffsets[]' /></td><td></td></tr>";
+    this.timeOffsetTemplate = "<td><input type='text' id='timeoffset_{index}' name='timeoffsets[]' " +
+        "class='timeoffset-spinner-input' />" +
+        "</td><td></td></tr>";
 
     this.addRow = function() {
         var rowCount = $("#" + this.tableName).find("tr").length;
@@ -20,6 +22,11 @@ var TableHandler = function(tableNameIn, clonedSelectNameIn, checkboxClassIn){
         var timeOffset = this.timeOffsetTemplate.replace(/{index}/ig, rowCount);
 
         $("#" + this.tableName).append(checkbox + stationInfo + timeOffset);
+
+        $(".timeoffset-spinner-input").spinner({
+            step: 60,
+            min: 0
+        });
     }
 
     this.fillClonedOptionsHtml = function() {
@@ -39,16 +46,43 @@ var TableHandler = function(tableNameIn, clonedSelectNameIn, checkboxClassIn){
             }
         });
     }
+
+    this.checkTimeoffsets = function() {
+        var timeOffsetsArray = [];
+        var allUnique = true;
+        $(".timeoffset-spinner-input").each(function() {
+            var timeOffset = $(this).spinner().spinner("value");
+            if(timeOffset !== "" && $.isNumeric(timeOffset)) {
+                if($.inArray(timeOffset, timeOffsetsArray) > -1) {
+                    return (allUnique = false);
+                }
+                timeOffsetsArray.push(timeOffset);
+            }
+        });
+        if(!allUnique) {
+            $("#routeStationsErrors").html("Some stations have equal timeoffset");
+            $("#routeStationsErrors").removeAttr("style");
+        } else {
+            $("#routeEntityForm").submit();
+        }
+    }
+
 }
 
 $(document).ready(function() {
     $("#stationInfoSelect").css("display", "none");
     var tableHandler = new TableHandler("stationsTable", "stationInfoSelect", "stationCheckboxes");
+
     $("#addStationButton").on("click", function() {
         tableHandler.addRow();
     });
+
     $("#removeStationButton").on("click", function() {
         tableHandler.removeRow();
+    });
+
+    $("#submitButton").on("click", function() {
+        tableHandler.checkTimeoffsets();
     });
 });
 

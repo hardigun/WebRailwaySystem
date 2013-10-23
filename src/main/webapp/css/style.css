@@ -7,6 +7,14 @@ body {
     background-image: url("bg.gif");
 }
 
+input[type="text"] {
+    width: 150px;
+}
+
+select {
+    width: 150px;
+}
+
 #container {
     border: 1px solid black;
     margin: 5px;
@@ -263,29 +271,41 @@ html>body .menu-item a {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    border: 1px solid #468847;
     color: #468847;
     background-color: #DFF0D8;
-    padding: 10px;
+    padding: 3px;
 }
 
 .message-error {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    border: 1px solid #B94A48;
     color: #B94A48;
     background-color: #F2DEDE;
-    padding: 10px;
+    padding: 3px;
 }
 
 .message-info {
     -webkit-border-radius: 7px;
     -moz-border-radius: 7px;
     border-radius: 7px;
+    border: 1px solid #3A87AD;
     color: #3A87AD;
     background-color: #DED9F7;
-    padding: 10px;
+    padding: 3px;
 }
 
 div.ui-datepicker {
     font-size: 12px;
+}
+
+.ui-spinner-input {
+    border-bottom-left-radius: 0 !important;
+    border-bottom-right-radius: 0 !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    font-size: 0.8em !important;
+    width: 120px !important;
 }

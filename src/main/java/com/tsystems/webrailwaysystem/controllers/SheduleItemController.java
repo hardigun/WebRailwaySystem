@@ -34,6 +34,10 @@ public class SheduleItemController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
 
+    public String view = "";
+
+    public Model uiModel = null;
+
     @Autowired
     private StationInfoService stationInfoService;
 
@@ -66,13 +70,13 @@ public class SheduleItemController {
             return new ModelAndView("shedule/add", "sheduleItemEntity", sheduleItem);
         }
 
-        try {
-            this.sheduleService.addSheduleItem(sheduleItem);
-            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
-        } catch (RailwaySystemException exc) {
-            LOGGER.debug("Error while adding SheduleItemEntity");
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-        }
+        /* if exception happens it helps save object state for user view */
+        this.view = "shedule/add";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("sheduleItemEntity", sheduleItem);
+
+        this.sheduleService.addSheduleItem(sheduleItem);
+        uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         return new ModelAndView("shedule/add", "sheduleItemEntity", new SheduleItemEntity());
     }
 

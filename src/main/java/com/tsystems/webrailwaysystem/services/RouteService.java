@@ -38,17 +38,11 @@ public class RouteService {
      * @param route that need to add
      */
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void addRoute(RouteEntity route) throws RailwaySystemException {
-        try {
-            this.routeDAO.save(route);
-            for(StationEntity station : route.getStationsList()) {
-                station.setRoute(route);
-                this.stationDAO.save(station);
-            }
-        } catch(Exception exc) {
-            exc.printStackTrace();
-            LOGGER.warn(exc);
-            throw new RailwaySystemException();
+    public void addRoute(RouteEntity route) {
+        this.routeDAO.save(route);
+        for(StationEntity station : route.getStationsList()) {
+            station.setRoute(route);
+            this.stationDAO.save(station);
         }
     }
 

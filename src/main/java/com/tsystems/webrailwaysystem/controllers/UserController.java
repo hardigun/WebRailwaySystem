@@ -5,6 +5,7 @@ import com.tsystems.webrailwaysystem.entities.Message;
 import com.tsystems.webrailwaysystem.entities.UserEntity;
 import com.tsystems.webrailwaysystem.enums.EMessageType;
 import com.tsystems.webrailwaysystem.enums.EUserRoles;
+import com.tsystems.webrailwaysystem.exceptions.EncryptionGenerationException;
 import com.tsystems.webrailwaysystem.exceptions.RailwaySystemException;
 import com.tsystems.webrailwaysystem.exceptions.UserAlreadyRegisterException;
 import com.tsystems.webrailwaysystem.exceptions.UserNotFoundException;
@@ -32,21 +33,21 @@ public class UserController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
 
+    public String view = "";
+
+    public Model uiModel = null;
+
     @Autowired
     private UserService userService;
 
     @RequestMapping(value = "/show/{login}", method = RequestMethod.GET)
-    public String showUser(@PathVariable String login, Model uiModel, HttpServletRequest request) {
+    public String showUser(@PathVariable String login, Model uiModel, HttpServletRequest request)
+            throws UserNotFoundException {
+
         if(!request.isUserInRole("ROLE_ADMIN") && !request.getUserPrincipal().getName().equals(login)) {
             return "redirect:/auth/denied";
         }
-        UserEntity user;
-        try {
-            user = this.userService.getByLogin(login);
-        } catch (UserNotFoundException e) {
-            LOGGER.debug("Profile for user with login " + login + " not found");
-            return "redirect:/";
-        }
+        UserEntity user = this.userService.getByLogin(login);
         uiModel.addAttribute("userEntity", user);
         return "user/show";
     }
@@ -60,7 +61,9 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView addUser(@ModelAttribute @Valid UserEntity user, BindingResult bindingResult,
                                 @RequestParam(value = "isupdate", required = false) boolean isupdate,
-                                Model uiModel, HttpServletRequest request) {
+                                Model uiModel, HttpServletRequest request)
+            throws UserAlreadyRegisterException, EncryptionGenerationException {
+
         if(isupdate) {
             uiModel.addAttribute("isupdate", true);
         }
@@ -68,17 +71,18 @@ public class UserController {
         if(bindingResult.hasErrors()) {
             return new ModelAndView("user/add", "userEntity", user);
         }
-        try {
-            if(isupdate) {
-                this.userService.updateUser(user);
-            } else {
-                this.userService.addUser(user);
-            }
-        } catch(RailwaySystemException exc) {
-            LOGGER.debug(exc + "(Login: " + user.getLogin() + ")");
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.ERROR));
-            return new ModelAndView("user/add", "userEntity", user);
+
+        /* if exception happens it helps save object state for user view */
+        this.view = "user/add";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("userEntity", user);
+
+        if(isupdate) {
+            this.userService.updateUser(user);
+        } else {
+            this.userService.addUser(user);
         }
+
         uiModel.addAttribute("message", new Message("Operation execute success!", EMessageType.SUCCESS));
         if(isupdate) {
             if(request.isUserInRole("ROLE_ADMIN")) {

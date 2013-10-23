@@ -44,15 +44,8 @@ public class StationInfoService {
      * @param stationInfo that will be add
      */
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void addStationInfo(final StationInfoEntity stationInfo) throws RailwaySystemException {
-        try {
-            stationInfoDAO.save(stationInfo);
-
-        } catch(Exception exc) {
-            exc.printStackTrace();
-            LOGGER.warn(exc);
-            throw new RailwaySystemException();
-        }
+    public void addStationInfo(StationInfoEntity stationInfo)  {
+        this.stationInfoDAO.save(stationInfo);
     }
 
     @Transactional(readOnly = true)

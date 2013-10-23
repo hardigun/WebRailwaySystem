@@ -15,7 +15,7 @@
 
 <div id="remove-loading" class="loading" style="display: none;"></div>
 
-<a href="/user/add" target="_blank" class="button">Add user</a>
+<a href="/user/add" class="button">Add user</a>
 
 <table id="usersList" class="CSSTableGenerator">
     <tr>

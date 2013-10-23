@@ -25,11 +25,11 @@ var ConfirmSaleHandler = function() {
             dataType: "json",
             success: function(data) {
                 handleResultFunc(data)
-                $("#loading-confirm").attr("style", "display: none;");
+                $("#loading-confirm").attr("style", "visibility: hidden;");
             },
             error: function() {
                 alert("Server error!")
-                $("#loading-confirm").attr("style", "display: none;");
+                $("#loading-confirm").attr("style", "visibility: hidden;");
             }
         });
     }

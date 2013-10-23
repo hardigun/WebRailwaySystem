@@ -28,6 +28,10 @@ public class TrainController {
 
     private static Logger LOGGER = Logger.getLogger("webrailwaysystem");
 
+    public String view = "";
+
+    public Model uiModel = null;
+
     @Autowired
     private TrainService trainService;
 
@@ -38,19 +42,19 @@ public class TrainController {
 
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public ModelAndView addTrain(@ModelAttribute @Valid TrainEntity train, BindingResult bindingResult, Model uiModel) {
+
         if(bindingResult.hasErrors()) {
             LOGGER.debug("Errors in the adding TrainEntity " + train);
             return new ModelAndView("train/add", "trainEntity", train);
         }
 
-        try {
-            this.trainService.addTrain(train);
-            uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
-        } catch (RailwaySystemException exc) {
-            LOGGER.debug("Error while adding TrainEntity");
-            uiModel.addAttribute("message", new Message(exc.getMessage(), EMessageType.SUCCESS));
-        }
+        /* if exception happens it helps save object state for user view */
+        this.view = "train/add";
+        this.uiModel = uiModel;
+        this.uiModel.addAttribute("trainEntity", train);
 
+        this.trainService.addTrain(train);
+        uiModel.addAttribute("message", new Message("Successfully added", EMessageType.SUCCESS));
         return new ModelAndView("train/add", "trainEntity", new TrainEntity());
     }
 

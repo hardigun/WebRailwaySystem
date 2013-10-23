@@ -34,14 +34,8 @@ public class SheduleService {
     private SheduleDAO sheduleDAO;
 
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void addSheduleItem(SheduleItemEntity sheduleItem) throws RailwaySystemException {
-        try {
-            this.sheduleDAO.save(sheduleItem);
-        } catch(Exception exc) {
-            exc.printStackTrace();
-            LOGGER.warn(exc);
-            throw new RailwaySystemException();
-        }
+    public void addSheduleItem(SheduleItemEntity sheduleItem) {
+        this.sheduleDAO.save(sheduleItem);
     }
 
     @Transactional(readOnly = true)

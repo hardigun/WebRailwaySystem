@@ -26,3 +26,27 @@ var DateTimeUtil = {
     }
 
 }
+
+$(document).ready(function() {
+    $(".date-input").datepicker({
+        dateFormat: "dd.mm.yy",
+        changeYear: true
+    });
+
+    $(".date-time-input").datetimepicker({
+        dateFormat: "dd.mm.yy",
+        timeFormat: "HH:mm"
+    })
+
+    $("#passengers-spinner-input").spinner({
+        step: 50,
+        min: 0,
+        max: 1000
+    }).val(500);
+
+    $(".timeoffset-spinner-input").spinner({
+        step: 60,
+        min: 0
+    });
+
+});

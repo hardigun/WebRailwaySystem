@@ -34,7 +34,7 @@ public class UserEntity extends AbstractEntity implements Comparable<UserEntity>
     @Size(min = 3, max = 255, message = "Surname size must be between 3 and 255")
     private String surname;
 
-    @NotNull(message = "User password must be not null")
+    @NotEmpty(message = "User password must be not empty")
     @Column(name = "user_pass")
     private String userPass;
 

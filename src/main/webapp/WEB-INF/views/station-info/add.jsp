@@ -12,7 +12,7 @@
             <td><form:errors path="title" cssClass="message-error"/></td>
         </tr>
         <tr>
-            <td colspan="3"><input type="submit" value="Submit" /></td>
+            <td colspan="3"><input type="submit" value="Ok" /></td>
         </tr>
     </table>
 </form:form>

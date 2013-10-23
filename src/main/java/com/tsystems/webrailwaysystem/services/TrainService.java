@@ -41,15 +41,8 @@ public class TrainService {
      * @param train that need to add to the database
      */
     @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void addTrain(final TrainEntity train) throws RailwaySystemException {
-        try {
-            this.trainDAO.save(train);
-
-        } catch(Exception exc) {
-            exc.printStackTrace();
-            LOGGER.warn(exc);
-            throw new RailwaySystemException();
-        }
+    public void addTrain(final TrainEntity train) {
+        this.trainDAO.save(train);
     }
 
     @Transactional

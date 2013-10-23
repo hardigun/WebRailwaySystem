@@ -3,7 +3,7 @@
 <%@ taglib prefix="railwaysystem" uri="http://tsystem.com/tags/railwaysystem" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<div id="loading-routes" class="loading" style="display: none;"></div>
+<div id="loading-routes" class="loading" style="visibility: hidden;"></div>
 
 <div style="height: 250px;">
     <railwaysystem:routes-trains-tree sheduleItemsByRoutesMap="${sheduleItemsByRoutesMap}" />

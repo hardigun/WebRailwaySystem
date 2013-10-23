@@ -138,11 +138,11 @@ var ShowStationsHandler = function(tableIn) {
             dataType: "json",
             success: function(data) {
                 successFunc(data, depDate);
-                $("#loading-routes").attr("style", "display: none;");
+                $("#loading-routes").attr("style", "visibility: hidden;");
             },
             error: function() {
                 alert("Server error!")
-                $("#loading-routes").attr("style", "display: none;");
+                $("#loading-routes").attr("style", "visibility: hidden;");
             }
         });
     }
@@ -166,7 +166,6 @@ var ShowStationsHandler = function(tableIn) {
     this.handle = function(activeTreeNode) {
         if(this.prepareRequest(activeTreeNode)) {
             this.sendRequest();
-            $("#loading-routes").attr("style", "display: none;")
         }
     }
 
@@ -197,11 +196,11 @@ $(document).ready(function() {
                         dataType: "json",
                         success: function(data) {
                             treeHandler.handle(nodeKeyParts[1], node, data)
-                            $("#loading-routes").attr("style", "display: none;");
+                            $("#loading-routes").attr("style", "visibility: hidden;");
                         },
                         error: function() {
                             alert("Server error!")
-                            $("#loading-routes").attr("style", "display: none;");
+                            $("#loading-routes").attr("style", "visibility: hidden;");
                         }
                 });
             }
